@@ -1,0 +1,27 @@
+Convert the Raspberry Pi 3 model B into an access point using openwrt 
+
+Components Required:
+> Raspberry Pi 3 model B
+> 2.5A power adapter for RPI3
+> 8 - 16 GB SD card
+> Ethernet RJ45 Cable
+
+Softwares Required :
+> Etcher
+> Putty
+> Wireless Network Watcher
+
+
+> Download the OpenWrt image file (`300MB) and flash it to an sd card of atleast 8GB using Etcher.
+> Insert the flashed sd card into the RPI 3 model B and boot it up.
+> Connect the ethernet cable to the computer and find out the ip address of the RPI using network watcher.
+> Enter the ip address to the putty and access the terminal (username : root) - no password, click enter
+> Change the ip address of the RPI3 to a different one if it is same as your main router. Otherwise leave as is.
+
+	- uci set network.lan.ipaddr=<new_ipaddress>
+	- uci commit
+	- /etc/init.d/network restart
+
+> Open up a browser and enter the ip address of the RPI3
+> Enable Wireless (WiFi).
+> Set an SSID and password (if required).

@@ -1,0 +1,34 @@
+Sensors :
+> SY-HS-220 humidity sensor (DHT22)-
+> Sharp GP2Y0A02YK0F (20cm - 150cm) -
+> PWM O/P rhydolabs
+> LM 35 Temperature Sensor
+> LDR 5mm high precision -
+> LSM9DS1 (9 degree of freedom IMU)
+
+
+To install the library, Follow the below steps
+
+>Enter the below command to download the library
+	git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+>Then enter in to the installed directory using the below command
+	cd Adafruit_Python_DHT
+>Now download the required modules using the below command
+	sudo apt-get install build-essential python-dev
+>Then install the library using the below command
+	sudo python setup.py install
+>Subscribe for a topic in the reciever raspberry
+>Run the script temp_hum.py or temp_hum_m.py for multiple devices
+>Use mqtt to send data from one Raspberry to another
+
+
+Items:
+
+1. MCP3008 IC
+2. Bread Board
+3. Connecting wires
+4. 1 microF capacitors
+5. Female to Male connecting wires
+6. Male to Male connecting wires
+7. Female to Female connecting wires
+8. Resistors

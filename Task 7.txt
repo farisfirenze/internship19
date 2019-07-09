@@ -1,0 +1,31 @@
+Use of GPS and GSM/GPRS module to track the location of an object and display the GPS coordinates
+
+
+>>> msg.timestamp
+datetime.time(18, 43, 53)
+>>> msg.lat
+'1929.045'
+>>> msg.lat_dir
+'S'
+>>> msg.lon
+'02410.506'
+>>> msg.lon_dir
+'E'
+>>> msg.gps_qual
+'1'
+>>> msg.num_sats
+'04'
+>>> msg.horizontal_dil
+'2.6'
+>>> msg.altitude
+100.0
+>>> msg.altitude_units
+'M'
+>>> msg.geo_sep
+'-33.9'
+>>> msg.geo_sep_units
+'M'
+>>> msg.age_gps_data
+''
+>>> msg.ref_station_id
+'0000'

@@ -1,0 +1,15 @@
+Attach RFID sticker in some items and  read the items using RFID reader
+
+RFID is an acronym for “radio-frequency identification” and refers to a technology whereby digital data encoded in RFID tags or smart labels (defined below) are captured by a reader via radio waves.
+RFID tag data can be read outside the line-of-sight
+RFID systems consist of three components: an RFID tag or smart label, an RFID reader, and an antenna. RFID tags contain an integrated circuit and an antenna, which are used to transmit data to the RFID reader (also called an interrogator). The reader then converts the radio waves to a more usable form of data. Information collected from the tags is then transferred through a communications interface to a host computer system, where the data can be stored in a database and analyzed at a later time.
+
+
+> Solder the male header on the RFID USB reader
+> connect the ID-12LA RFID module on the USB RFID
+> connect GND and VCC (5v) on the RPI
+> connect 3rd pin (i.e. Tx) to the 10th pin of RPI (UART0 RX) for serial transmission
+> now run this command before running the script to check if the connection is ok:
+	 sudo minicom -b 9600 -o -D /dev/ttyS0
+> now bring a tag closer to the reader and see if any data is being printed.
+> if data is being printed, run the script rfid.py and it will recognise the item.

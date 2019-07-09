@@ -1,0 +1,93 @@
+To establish VOIP communication between the Raspberry Pi devices in adhoc and infrastructure networks.
+
+VoIP : Voice over Internet Protocol
+
+For VoIP communication, an IP (or VoIP) PBX is essentially needed. The PBX phrase is the acronym for Private Branch Exchange that is a hardware or software solution for establishing communication lines between different types of communication end-points, regardless of using wired, mobile or VoIP technology.
+
+PSTN (public switched telephone network) is the world's collection of interconnected voice-oriented public telephone networks, both commercial and government-owned.
+
+The Session Initiation Protocol (SIP) is a signaling protocol used for initiating, maintaining, and terminating real-time sessions that include voice, video and messaging applications.[1] SIP is used for signaling and controlling multimedia communication sessions in applications of Internet telephony for voice and video calls, in private IP telephone systems, in instant messaging over Internet Protocol (IP) networks as well as mobile phone calling over LTE (VoLTE)
+
+Test speaker on RPI3
+	speaker-test -c2 -twav -l7
+#add mic
+pcm.!default {
+         type asym
+         playback.pcm {
+                 type plug
+                 slave.pcm "hw:0,0"
+         }
+         capture.pcm {
+                 type plug
+                 slave.pcm "hw:1,0"
+         } 
+ }
+
+ ctl.!default {
+        type hw
+        card 0
+}
+
+#reset microphone settings
+
+sudo nano /usr/share/alsa/alsa.conf
+
+defaults.ctl.card 0
+defaults.pcm.card 0
+defaults.pcm.device 0
+defaults.pcm.subdevice -1
+
+sudo nano ~/.asoundrc > empty
+sudo nano /etc/asound.conf > empty
+
+Test Microphone : 
+> First record using :
+	arecord --format=S16_LE --duration=5 --rate=16000 --file-type=raw out.raw
+> Play using:
+	aplay --format=S16_LE --rate=16000 out.raw
+> Device Config:
+	hw:<card number>,<device number>
+> card number and device number found using :
+	arecord -l : for audio in
+	aplay -l : for audio out or any playback devices
+> microphone or speaker control
+	alsamixer -c "card number"
+> Stream directly using :
+	arecord --format=S16_LE --rate=16000 | aplay --format=S16_LE --rate=16000
+	> --format : necessary
+	> --rate : optional
+or
+	arecord -D plughw:1,0 -d 3 test.wav && aplay test.wav
+
+Components Required : 
+> 2 Raspberry PI 3 model B with rasbian OS 
+> 1 Raspberry PI 3 model B with raspbx   
+> 1 Router
+> 2 USB mic and 2 Headphones
+
+Softwares Required :
+> Twinkle (RPI) or any Softphones
+> Wireshark (optional) -> to monitor data exchange
+> VNC
+
+Steps for VoIP communication:
+> Assuming all the devices are in the same network and updated using "sudo apt-get install update && upgrade ".
+> Note that port for PJSIP : 5060 and SIP : 5160
+> Install raspbx on one Raspberry Pi 3 model B and boot it up.
+> Execute the command raspbx-upgrade
+> Now this RPI will act as a PBX (Private Branch Excange) server (Asterisk)
+> Execute asterisk -r to see if the asterisk is really installed.
+> Now open the browser and enter the ip of the PBX server (raspbx) in the address bar.
+>> Create admin account
+>> PBX administration > go to Application > Extensions > New Extension > Add PJSIP Extension
+>> Create 2 or more extensions (eg : 1100) and passwords.
+
+> Open Rasbperry PI terminals using VNC or putty (for now) and install twinkle(I used this) or any working softphone ( like linphone, sflphone, ring, 3CX, MizuPhone etc.)
+> Now open vnc and connect it.
+> Dont forget to connect and configure your Audio in and Audio out peripherals.
+> Open twinkle and create an account with the same extension and password. 
+> Give domain as the IP address of the raspbx device (our PBX server).
+> so your id will look like this : <sip:extension@Domain>
+> Do the same for the other RPI and use different extension you made in step:7b.
+> Configure your audio devices in twinkle through system settings.
+> Place a call ! Voila ! 

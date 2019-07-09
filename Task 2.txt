@@ -1,0 +1,96 @@
+Create an adhoc network between the Raspberry Pi, Mobile Client, and laptop. Exchange messages between them.
+
+Bluetooth Connection
+
+Components Required:
+> Raspberry Pi 3 model B with Bluetooth support
+> 2.5A power adapter for RPI3
+> 8 - 16 GB SD card
+
+Softwares Required :
+> Etcher
+> Putty
+> Wireless Network Watcher
+
+> Download Raspbian OS from official raspberry website
+> Flash the image using Etcher
+> Insert the flashed sd card into the RPI 3 model B and boot it up.
+> Open the terminal in Putty
+> type the following in terminal 
+
+pi@raspberrypi:~ $ bluetoothctl
+Agent registered
+[bluetooth]# agent on //turning the agent on
+Agent is already registered
+[bluetooth]# default-agent
+Default agent request successful
+[bluetooth]# power on //switching power over to the controller
+Changing power on succeeded
+[CHG] Controller B8:27:EB:68:A0:0A Powered: yes
+[bluetooth]# discoverable on // making the controller discoverable
+Changing discoverable on succeeded
+[CHG] Controller B8:27:EB:68:A0:0A Discoverable: yes
+[bluetooth]# pairable on //making the controller pairable
+Changing pairable on succeeded
+[bluetooth]# scan on //scanning for devices
+Discovery started
+[CHG] Controller B8:27:EB:68:A0:0A Discovering: yes
+[NEW] Device 42:7D:61:62:A4:A0 42-7D-61-62-A4-A0
+[bluetooth]# devices // listing the scanned devices
+Device 48:27:EA:08:65:E4 Firenze v3
+Device 18:26:66:71:77:B8 18-26-66-71-77-B8
+Device 42:7D:61:62:A4:A0 42-7D-61-62-A4-A0
+[bluetooth]# remove 48:27:EA:08:65:E4 //used for connecting next time
+[DEL] Device 48:27:EA:08:65:E4 Firenze v3
+Device has been removed
+[bluetooth]# devices
+Device 18:26:66:71:77:B8 18-26-66-71-77-B8
+Device 42:7D:61:62:A4:A0 42-7D-61-62-A4-A0
+[NEW] Device 48:27:EA:08:65:E4 Firenze v3
+
+> Pair the device using :
+	pair XX:XX:XX:XX:XX:XX
+
+[bluetooth]# pair 48:27:EA:08:65:E4
+Attempting to pair with 48:27:EA:08:65:E4
+[CHG] Device 48:27:EA:08:65:E4 Connected: yes
+Request confirmation
+[agent] Confirm passkey 744437 (yes/no): yes
+[CHG] Device 48:27:EA:08:65:E4 Modalias: bluetooth:v0075p1200d1436
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001105-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 0000110a-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 0000110c-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 0000110e-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001112-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001115-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001116-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 0000111f-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 0000112f-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001132-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001200-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001800-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: 00001801-0000-1000-8000-00805f9b34fb
+[CHG] Device 48:27:EA:08:65:E4 UUIDs: a23d00bc-217c-123b-9c00-fc44577136ee
+[CHG] Device 48:27:EA:08:65:E4 ServicesResolved: yes
+[CHG] Device 48:27:EA:08:65:E4 Paired: yes
+Pairing successful
+[CHG] Device 48:27:EA:08:65:E4 ServicesResolved: no
+[CHG] Device 48:27:EA:08:65:E4 Connected: no
+[bluetooth]# exit
+
+> Now, type 
+	sudo sdptool add sp // setting up a serial port for communication
+> type 
+	sudo rfcomm listen hci0& // opens up a rfcomm connection and ‘&’ implies that even if we have to wait for the connection, we can get back our terminal
+> Now the RPI is waiting for messages to be received from the device
+> Now in your android device, open up "bluetooth terminal" by Qwerty. //found in appstore
+> Connect to raspberrypi
+> send a message
+> To see the message in raspberrypi terminal, type
+	cat /dev/rfcomm0
+> This will display all the messaes that are send to the raspberrypi
+> To save all the data send to a file, type
+	cat /dev/rfcomm0 > file.txt //stores the messages in file.txt in the working directory
+> now to send messages to the device from raspberrypi, type
+	echo "type the message you want to send here">/dev/rfcomm0
+> unpair and pair again if you want to communicate again
