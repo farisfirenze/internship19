@@ -1,0 +1,14 @@
+Use of Camera in Raspberry Pi to capture the live streaming
+
+> motion can be used to capture live streaming of the raspberry pi USB camera
+> Usage:
+	
+	sudo motion service start
+	
+> Enter the ip address of the server (i.e. The RPI where you ran that command) to a browser on any other devices such as raspberry pi
+> You can see the live camera streaming
+
+to stop the streaming, simply run the command
+> sudo motion service stop
+
+> sudo killall motion
